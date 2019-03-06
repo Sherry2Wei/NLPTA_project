@@ -2,21 +2,20 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from dfply import *
-import os
+import re
 from nltk.stem import WordNetLemmatizer
 from dfply import *
 import os
 from nltk.tokenize import word_tokenize
 #%%
-
 from sklearn.feature_extraction.text import CountVectorizer
-
 from nltk.stem import WordNetLemmatizer
-
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from collections import Counter
 path = r'D:\lecture\NLPTA\project\FOMC minutes\1993'
-
 os.chdir(path)
-
+#%%
 file_names = os.listdir(path)
 file_type = ['txt' in file_name for file_name in file_names]
 df_file = pd.DataFrame({'name':file_names,'type':file_type},)
@@ -57,3 +56,27 @@ df_Anuualtfidf = pd.DataFrame(tfidf.A,columns = v.get_feature_names())
 files93_tfidf_sk = pd.concat([files93,df_Anuualtfidf],axis = 1)
 files93_tfidf_sk
 
+## nltk bag of words
+#%%
+def get_bow_nltk(content):
+    tokens = [w for w in word_tokenize(content.lower()) if w.isalpha()]
+    no_stops = [t for t in tokens if t not in stopwords.words('english')]
+    bow_nltk = Counter(no_stops).most_common(len(no_stops))
+    df_bow_nltk = pd.DataFrame(bow_nltk,columns = ['terms','occurrences'])
+    df_bow_nltk['content'] = content*len(no_stops)
+    return df_bow_nltk
+
+#%%
+bow_nltk_combine = pd.concat([get_bow_nltk(content) for content in corpus])
+
+#%% gensim tf-idf
+from gensim.corpora.dictionary import Dictionary
+from gensim.models.tfidfmodel import TfidfModel
+
+tokenized_contents = [word_tokenize(content.lower()) for content in corpus]
+#%% we need to remove the special characters
+d2 = Dictionary(tokenized_contents)
+bow_corpus = [d2.doc2bow(doc) for doc in tokenized_contents if doc.isapha()]
+tfidf_gensim = TfidfModel(bow_corpus)
+
+tfidf_weights2 = tfidf_gensim[bow_corpus[0]]
