@@ -6,7 +6,7 @@ import os
 from nltk.stem import WordNetLemmatizer
 from dfply import *
 import os
-
+from nltk.tokenize import word_tokenize
 #%%
 
 from sklearn.feature_extraction.text import CountVectorizer
@@ -56,4 +56,4 @@ tfidf = v.fit_transform(corpus)
 df_Anuualtfidf = pd.DataFrame(tfidf.A,columns = v.get_feature_names())
 files93_tfidf_sk = pd.concat([files93,df_Anuualtfidf],axis = 1)
 files93_tfidf_sk
-from nltk.tokenize import word_tokenize
+
