@@ -4,11 +4,11 @@ import time
 import pandas as pd
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
-from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer
 from multiprocessing import Pool
 import warnings
+from nltk.stem import WordNetLemmatizer
 warnings.filterwarnings("ignore",category=DeprecationWarning)
 
 def readfile(filename):
@@ -17,6 +17,7 @@ def readfile(filename):
     return file_contents
 
 def lem_term(document):
+    document = re.sub('\d+|\_', '', document)
     wnl = WordNetLemmatizer()
     tokens = word_tokenize(document)
     lem_token = [wnl.lemmatize(word) for word in tokens]
@@ -79,7 +80,7 @@ if __name__ == '__main__':
     IR = pd.read_csv(r'D:\lecture\NLPTA\project\FEDRateChange.csv')
     IR >> head(3)
     IR.columns
-    IR.rename(columns={ IR.columns[2]: "day" }, inplace=True)
+    IR.rename(columns={IR.columns[2]: "day"}, inplace=True)
     IR['IR_change_freq_Annual'] = IR.groupby(['Year'])['IR_Change'].transform('count')
 
     IR[IR['IR_change_freq_Annual'] == IR['IR_change_freq_Annual'].max()]
