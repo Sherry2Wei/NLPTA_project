@@ -83,4 +83,14 @@ def get_bow_nltk(content):
 
 
 
+IR = pd.read_csv(r'D:\lecture\NLPTA\project\FEDRateChange.csv')
+IR >> head(3)
+
+IR['IR_change_freq_Annual'] = IR.groupby(['year'])['IR_Change'].transform('count')
+IR[IR['IR_change_freq_Annual'] == IR['IR_change_freq'].max()]
+
+#%% merge interest rate with terms frame
+
+
+
 
