@@ -34,7 +34,7 @@ def lem_term(document):
 
 if __name__ == '__main__':
     start_time = time.time()
-    path = r"c:\Users\ChonWai\Desktop\NPL\Data\FOMCminutes"
+    path = r"D:\lecture\NLPTA\project\FOMCminutes"
     doc_list = os.listdir(path)
     doc_content_list = list()
     [doc_content_list.append(readfile(doc)) for doc in doc_list]
