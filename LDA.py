@@ -22,10 +22,10 @@ def sent_to_words(sentences):
 os.chdir(r'D:\lecture\NLPTA\project\\code')
 import pandas as pd
 minutes = pd.read_csv(r'D:\lecture\NLPTA\project\code\doc_df.csv')
-corpus = list(sent_to_words(minutes['content'])
+corpus = list(sent_to_words(minutes['content']))
 
 bigram = gensim.models.Phrases(corpus, min_count=5, threshold=100) # higher threshold fewer phrases.
-#trigram = gensim.models.Phrases(bigram[corpus], threshold=100)
+trigram = gensim.models.Phrases(bigram[corpus], threshold=100)
 
 # Faster way to get a sentence clubbed as a trigram/bigram
 bigram_mod = gensim.models.phrases.Phraser(bigram)
@@ -88,6 +88,7 @@ print('\nCoherence Score: ', coherence_lda)
 import pyLDAvis
 import pyLDAvis.gensim  # don't skip this
 import matplotlib.pyplot as plt
-vis = pyLDAvis.gensim.prepare(lda_model, corpus, id2word)
 
-pyLDAvis.display(vis)
+#%%
+vis = pyLDAvis.gensim.prepare(lda_model, corpus, id2word)
+vis
