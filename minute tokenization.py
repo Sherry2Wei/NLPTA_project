@@ -93,6 +93,7 @@ if __name__ == '__main__':
     #len(doc_df_BoW_sk2.columns)
 
 #%% spacy
+import spacy
 bigram_mod = gensim.models.phrases.Phraser(bigram)
 trigram_mod = gensim.models.phrases.Phraser(trigram)
 print(trigram_mod[bigram_mod[data_words[0]]])
